@@ -4,6 +4,7 @@ class Obstaculo:
 
     def obstaculo1(self, px, py, x, y):
         #definir cores ainda
+        #ver equações das elipses para ver a tangente
         fill(242, 141, 53)    
         rect(px, py, x, y)
     
@@ -15,6 +16,8 @@ class Obstaculo:
         
     def obstaculo2(self, px, py, x, y):
         #definir cores ainda
+        #equações
+        
         fill(0, 0, 0)
         translate(px, py)
         rotate(PI/7.0)
@@ -34,14 +37,17 @@ class Obstaculo:
         
     def obstaculo3(self, px, py, x, y):
         #buraco negro
+        #entra num ponto e sai em outro
         pass
 
     def obstaculo4(self):
         #lago
+        #caso a bolinha entre aqui, ela volta para o ponto em que saiu
         pass
         
     def obstaculo5(self):
         #areia
+        #aumenta a força necessária para a bolinha se mover
         pass
 
 o = Obstaculo()
