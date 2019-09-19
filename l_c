@@ -1,0 +1,100 @@
+#definicao da bola
+v = PVector(0,0)
+p = PVector(400,400)
+r = 10
+
+
+
+
+#incrementos e verfificadores de movimento    
+inc = PVector(0,0)     
+ver = False
+
+class Bola:
+    def __init__(self,p,v,r):
+        self.v = v
+        self.p = p
+        self.r = r
+    def move(self,dt):
+        self.p.add(self.v*dt)
+
+    def xlr8(self,dt):
+        a = self.v.mult(-0.1)
+        self.v.add(a*dt)
+
+
+b = Bola(p,v,r)
+
+def colide(b, s):
+    
+    vy = s.mult(b.v.dot(s))
+    vx = b.v - vy
+
+    
+    vy = vy.mult(-1)
+    
+    b.v = vx.add(vy)
+
+
+oldt = millis()
+xmin = ymin = 200
+xmax = ymax = 600
+
+
+def setup():
+    size(800,800)
+
+def draw():
+    global oldt, xmin, xmax, ymin, ymax
+    
+    t = oldt
+    oldt = millis()
+    dt = t-oldt
+    
+    background(0)
+    rectMode(CORNERS)
+    noFill()
+    stroke(255)
+    rect(xmin,ymin,xmax,ymax)
+    
+    b.move(dt)
+    b.xlr8(dt)
+    
+    if b.p.x <= xmin+b.r:
+        colide(b, PVector(1,0))
+    elif b.p.x >= xmax-b.r:
+        colide(b, PVector(-1,0))
+    elif b.p.y <= ymin+b.r:
+        colide(b, PVector(0,1))
+    elif b.p.y >= ymax-b.r:
+        colide(b, PVector(0,-1))
+    
+    
+    fill(255)
+    noStroke()
+    ellipse(b.p.x,b.p.y, 2*b.r, 2*b.r)
+    
+    noFill()
+    stroke(255)
+    ellipse(b.p.x,b.p.y, 2*b.r+20, 2*b.r+20)
+
+
+def mouseDragged():
+    global inc, ver
+    
+    
+    if sqrt((mouseX - p.x)**2 + (mouseY-p.y)**2) <= r+10:
+        ver = True
+    
+    if ver:
+        inc.x = p.x - mouseX
+        inc.y = p.y - mouseY
+        stroke(255,0,0)
+        line(p.x,p.y,mouseX,mouseY)
+
+def mouseReleased():
+    global inc, ver
+    if ver:
+        v.add(inc/-1000)
+        inc = PVector(0,0) 
+        ver = False
