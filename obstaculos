@@ -1,0 +1,57 @@
+class Obstaculo:
+    def __init__(self):
+        pass
+
+    def obstaculo1(self, px, py, x, y):
+        #definir cores ainda
+        fill(242, 141, 53)    
+        rect(px, py, x, y)
+    
+        fill(122, 166, 56)
+        ellipse(px + 0.5*x, py + 0.5*y, 1.5*x, 0.5*y)
+    
+        fill(242, 141, 53)
+        ellipse(px + 0.5*x, py + 0.5*y, x, 0.25*y)
+        
+    def obstaculo2(self, px, py, x, y):
+        #definir cores ainda
+        fill(0, 0, 0)
+        translate(px, py)
+        rotate(PI/7.0)
+        ellipse(0, 0, 2*x, y)
+        rotate(PI/7.0)
+        ellipse(0, 0, 2*x, y)
+        rotate(PI/7.0)
+        ellipse(0, 0, 2*x, y)
+        rotate(PI/7.0)
+        ellipse(0, 0, 2*x, y)
+        rotate(PI/7.0)
+        ellipse(0, 0, 2*x, y)
+        rotate(PI/7.0)
+        ellipse(0, 0, 2*x, y)
+        rotate(PI/7.0)
+        ellipse(0, 0, 2*x, y)
+        
+    def obstaculo3(self, px, py, x, y):
+        #buraco negro
+        pass
+
+    def obstaculo4(self):
+        #lago
+        pass
+        
+    def obstaculo5(self):
+        #areia
+        pass
+
+o = Obstaculo()
+
+def setup():
+    size(1200, 800)
+    noStroke()
+    
+    
+def draw():
+    background(122, 166, 56)
+    o.obstaculo1(200, 200, 200, 200)
+
