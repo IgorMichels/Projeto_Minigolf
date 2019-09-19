@@ -19,8 +19,12 @@ class Bola:
         self.p.add(self.v*dt)
 
     def xlr8(self,dt):
-        a = self.v.mult(-0.1)
-        self.v.add(a*dt)
+        F = self.v.copy()
+        F.mult(-0.1*F.mag()**2)
+        F.mult(dt)
+        self.v.add(F)
+    
+        
 
 
 b = Bola(p,v,r)
@@ -36,7 +40,7 @@ def colide(b, s):
     b.v = vx.add(vy)
 
 
-oldt = millis()
+t = millis()
 xmin = ymin = 200
 xmax = ymax = 600
 
@@ -45,10 +49,10 @@ def setup():
     size(800,800)
 
 def draw():
-    global oldt, xmin, xmax, ymin, ymax
+    global t, xmin, xmax, ymin, ymax
     
-    t = oldt
-    oldt = millis()
+    oldt = t
+    t = millis()
     dt = t-oldt
     
     background(0)
@@ -58,7 +62,7 @@ def draw():
     rect(xmin,ymin,xmax,ymax)
     
     b.move(dt)
-    b.xlr8(dt)
+    #b.xlr8(dt)
     
     if b.p.x <= xmin+b.r:
         colide(b, PVector(1,0))
@@ -77,6 +81,8 @@ def draw():
     noFill()
     stroke(255)
     ellipse(b.p.x,b.p.y, 2*b.r+20, 2*b.r+20)
+    print(ver)
+    print(inc)
 
 
 def mouseDragged():
@@ -95,6 +101,6 @@ def mouseDragged():
 def mouseReleased():
     global inc, ver
     if ver:
-        v.add(inc/-1000)
+        b.v.add(inc.div(500))
         inc = PVector(0,0) 
         ver = False
