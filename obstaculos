@@ -10,9 +10,19 @@ class Obstaculo:
     
         fill(122, 166, 56)
         ellipse(px + 0.5*x, py + 0.5*y, 1.5*x, 0.5*y)
-    
+        #ellipse 1
+
         fill(242, 141, 53)
         ellipse(px + 0.5*x, py + 0.5*y, x, 0.25*y)
+        #ellipse 2
+        
+        self.a21 = (1.5*x)**2 + (0.5*y)**2
+        self.b21 = (0.5*y)**2
+        #dados da ellipse 1
+        
+        self.a22 = (x)**2 + (0.25*y)**2
+        self.b22 = (0.25*y)**2
+        #dados da ellipse 2
         
     def obstaculo2(self, px, py, x, y):
         #definir cores ainda
@@ -22,18 +32,39 @@ class Obstaculo:
         translate(px, py)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
+        self.tg1 = x/cos(PI/7.0).normalize()
+        #arrumar isso
+        
+        fill(127, 0, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
+        self.tg2 = x/cos(2*PI/7.0).normalize()        
+        
+        fill(255, 0, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
+        self.tg3 = x/cos(3*PI/7.0).normalize()        
+        
+        fill(0, 127, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
+        self.tg4 = x/cos(4*PI/7.0).normalize()        
+        
+        fill(0, 255, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
+        self.tg5 = x/cos(5*PI/7.0).normalize()        
+        
+        fill(0, 0, 127)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
+        self.tg6 = x/cos(6*PI/7.0).normalize()        
+        
+        fill(0, 0, 255)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
+        self.tg7 = x/cos(7*PI/7.0).normalize()        
+        
         
     def obstaculo3(self, px, py, x, y):
         #buraco negro
@@ -59,5 +90,11 @@ def setup():
     
 def draw():
     background(122, 166, 56)
-    o.obstaculo1(200, 200, 200, 200)
-
+    o.obstaculo2(300, 300, 200, 200)
+    print(o.tg1)
+    print(o.tg2)
+    print(o.tg3)
+    print(o.tg4)
+    print(o.tg5)
+    print(o.tg6)
+    print(o.tg7)
