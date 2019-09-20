@@ -8,7 +8,7 @@ class Obstaculo:
         fill(242, 141, 53)    
         rect(px, py, x, y)
     
-        fill(122, 166, 56)
+        fill(0)
         ellipse(px + 0.5*x, py + 0.5*y, 1.5*x, 0.5*y)
         #ellipse 1
 
@@ -32,49 +32,70 @@ class Obstaculo:
         translate(px, py)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
-        self.tg1 = x/cos(PI/7.0).normalize()
-        #arrumar isso
+        tg1x = x/cos(PI/7.0)
+        tg1y = y/sin(PI/7.0)
+        self.tg1 = PVector(tg1x, tg1y)
         
         fill(127, 0, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
-        self.tg2 = x/cos(2*PI/7.0).normalize()        
+        tg2x = x/cos(2*PI/7.0)
+        tg2y = y/sin(2*PI/7.0)
+        self.tg2 = PVector(tg2x, tg2y)
         
         fill(255, 0, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
-        self.tg3 = x/cos(3*PI/7.0).normalize()        
+        tg3x = x/cos(3*PI/7.0)
+        tg3y = y/sin(3*PI/7.0)
+        self.tg3 = PVector(tg3x, tg3y)
         
         fill(0, 127, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
-        self.tg4 = x/cos(4*PI/7.0).normalize()        
+        tg4x = x/cos(4*PI/7.0)
+        tg4y = y/sin(4*PI/7.0)
+        self.tg4 = PVector(tg4x, tg4y)
         
         fill(0, 255, 0)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
-        self.tg5 = x/cos(5*PI/7.0).normalize()        
+        tg5x = x/cos(5*PI/7.0)
+        tg5y = y/sin(5*PI/7.0)
+        self.tg5 = PVector(tg5x, tg5y)
         
         fill(0, 0, 127)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
-        self.tg6 = x/cos(6*PI/7.0).normalize()        
+        tg6x = x/cos(6*PI/7.0)
+        tg6y = y/sin(6*PI/7.0)
+        self.tg6 = PVector(tg6x, tg6y)
         
         fill(0, 0, 255)
         rotate(PI/7.0)
         ellipse(0, 0, 2*x, y)
-        self.tg7 = x/cos(7*PI/7.0).normalize()        
+        tg7x = x/cos(PI)
+        tg7y = y/sin(PI)
+        self.tg7 = PVector(tg7x, tg7y)
         
         
-    def obstaculo3(self, px, py, x, y):
+    def obstaculo3(self, pxi, pyi, pxo, pyo, x, y):
         #buraco negro
-        #entra num ponto e sai em outro
-        pass
+        #entra num ponto e sai em outro com mesma velocidade, aceleração e direção
+        stroke(0, 0, 255)
+        fill(0)
+        ellipse(pxi, pyi, x, y)
+        
+        stroke(255, 0, 0)
+        fill(0)
+        ellipse(pxo, pyo, x, y)
 
-    def obstaculo4(self):
+    def obstaculo4(self, px, py, x, y):
         #lago
         #caso a bolinha entre aqui, ela volta para o ponto em que saiu
-        pass
+        ellipse(px, py, x, y)
+        rect(px, py, x/2, y/2)
+
         
     def obstaculo5(self):
         #areia
@@ -89,12 +110,13 @@ def setup():
     
     
 def draw():
-    background(122, 166, 56)
-    o.obstaculo2(300, 300, 200, 200)
-    print(o.tg1)
-    print(o.tg2)
-    print(o.tg3)
-    print(o.tg4)
-    print(o.tg5)
-    print(o.tg6)
-    print(o.tg7)
+    background(0)
+    o.obstaculo1(300, 300, 200, 200)
+#    print(o.tg1)
+#    print(o.tg2)
+#    print(o.tg3)
+#    print(o.tg4)
+#    print(o.tg5)
+#    print(o.tg6)
+#    print(o.tg7)
+
