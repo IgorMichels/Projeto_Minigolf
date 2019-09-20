@@ -17,13 +17,13 @@ def Menu():
     stroke(255)
     
     text('New Game', width/2, 300)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 300+30 and mouseY >= 300-30:
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 300+45 and mouseY >= 300-45:
         rect(width/2, 300,180,90)
         if mousePressed == True:
             estado = Minigolf
     
-    text('Credits',width/2, 500)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 500+30 and mouseY >= 500-30:
+    text('Credits', width/2, 500)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 500+45 and mouseY >= 500-45:
         rect(width/2, 500,180,90)
         if mousePressed == True:
             estado = Creditos
@@ -89,7 +89,7 @@ xmin = ymin = 200
 xmax = ymax = 600
 
 def Minigolf():
-    global t, xmin, xmax, ymin, ymax
+    global estado, Menu, t, xmin, xmax, ymin, ymax
     
     oldt = t
     t = millis()
@@ -121,7 +121,15 @@ def Minigolf():
     noFill()
     stroke(255)
     ellipse(b.p.x,b.p.y, 2*b.r+20, 2*b.r+20)
+    
+    rectMode(CENTER)
+    text('Back', 0.2*width, 50)
+    if mouseX <= 0.2*width + 0.1*width and mouseX >= 0.2*width - 0.1*width and mouseY <= 50+30 and mouseY >= 50-30:
+        rect(0.2*width, 50, 0.2*width, 60)
+        if mousePressed == True:
+            estado = Menu
 
+    
 
 posy = y-50
 
@@ -141,7 +149,7 @@ def Creditos():
 estado = Menu
 
 def setup():
-    size(800,800)
+    size(x, y)
     
 def draw():
     global estado
