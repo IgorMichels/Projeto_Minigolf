@@ -158,15 +158,15 @@ def draw():
 def mouseDragged():
     global inc, ver
     
+    if v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
+        if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
+            ver = True
     
-    if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
-        ver = True
-    
-    if ver:
-        inc.x = b.p.x - mouseX
-        inc.y = b.p.y - mouseY
-        stroke(255,0,0)
-        line(b.p.x,b.p.y,mouseX,mouseY)
+        if ver:
+            inc.x = b.p.x - mouseX
+            inc.y = b.p.y - mouseY
+            stroke(255,0,0)
+            line(b.p.x,b.p.y,mouseX,mouseY)
 
 def mouseReleased():
     global inc, ver
