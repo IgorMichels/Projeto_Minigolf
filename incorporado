@@ -139,9 +139,10 @@ def Creditos():
     posx = width/2
     v = -3
     posy += v
-    text("Minigolf: \n Isaque Vieira Machado Pim \n Igor Patrício Michels  \n \n Agradecimentos: \n Paulo Cesar \n Asla de Sa \n Coffee Machine do 14", posx, posy)
+    text("Minigolf: \n Isaque Vieira Machado Pim \n Igor Patricio Michels  \n \n Agradecimentos: \n Paulo Cesar \n Asla de Sa \n Coffee Machine do 14", posx, posy)
     if posy < -400:
         estado = Menu
+        posy = y-50
 
     
     
