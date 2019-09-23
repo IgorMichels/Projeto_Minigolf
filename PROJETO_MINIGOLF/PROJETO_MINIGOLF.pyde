@@ -82,52 +82,51 @@ class Bola:
 b = Bola(p,v,r)
 
 def colide(b, s):
-    
+    s.normalize()
     vy = s*(b.v.dot(s))
     vx = b.v - vy
 
     
     vy = vy* (-1)
-    
+    b.p.add(2*vy)
     b.v = vx + vy
 
 
 t = millis()
-xmin = ymin = 200
-xmax = ymax = 600
+
 
 lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,la)]
+r2 = b.r**2
 def detecta_colisao():
-    global lados, b
+    global lados, b, r2
     
     for l in lados:
         p1 = l[0].copy()
         p2 = l[1].copy()
-        d = dist(p1.x,p1.y,p2.x,p2.y)
-        p = (p2-p1).normalize()
-        n = PVector(-p.y,p.x)
+        p = p2-p1
         ball = b.p.copy()
-        v = n*(n.dot(ball-p1))
+        v1 = p.dot(ball-p1)
+        v2 = p.dot(ball-p2)
         
-        if v.mag() <= b.r:
-            v1 = p*(p.dot(ball-p1))
-            v2 = p*(p.dot(ball-p2))
-            
-            if v1.mag() + v2.mag() <= d:
-                colide(b, n)
+        if v1 > 0 and v2 < 0:
+            a_ = (ball-p1) - (v1/(v1-v2))*p
+            if a_.x**2 + a_.y**2 <= r2:
+                colide(b,a_)
+
 
 def Minigolf():
-    global estado, Menu, t, xmin, xmax, ymin, ymax, lados
+    global estado, Menu, t, lados
     
     oldt = t
     t = millis()
     dt = t-oldt
-    
+    dt = 38
+
     background(0)
     rectMode(CORNERS)
     noFill()
     stroke(255)
-    #rect(xmin,ymin,xmax,ymax)
+
     
     b.move(dt)
     b.xlr8(dt)
@@ -192,15 +191,15 @@ def draw():
 def mouseDragged():
     global inc, ver
     
-    if b.v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
-        if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
-            ver = True
+    #if b.v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
+    if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
+        ver = True
     
-        if ver:
-            inc.x = b.p.x - mouseX
-            inc.y = b.p.y - mouseY
-            stroke(255,0,0)
-            line(b.p.x,b.p.y,mouseX,mouseY)
+    if ver:
+        inc.x = b.p.x - mouseX
+        inc.y = b.p.y - mouseY
+        stroke(255,0,0)
+        line(b.p.x,b.p.y,mouseX,mouseY)
 
 def mouseReleased():
     global inc, ver
