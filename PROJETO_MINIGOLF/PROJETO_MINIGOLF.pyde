@@ -2,6 +2,14 @@
 x = 800
 y = 800
 
+la = PVector(200,200)
+lb = PVector(200,500)
+lc = PVector(300,600)
+ld = PVector(600,600)
+le = PVector(600,500)
+lf = PVector(400,500)
+lg = PVector(400,200)
+
 def Menu():
     global estado
     
@@ -36,7 +44,7 @@ def Menu():
             
 #definicao da bola
 v = PVector(0,0)
-p = PVector(400,400)
+p = PVector(300,300)
 r = 10
 
 
@@ -88,7 +96,7 @@ t = millis()
 xmin = ymin = 200
 xmax = ymax = 600
 
-lados = []
+lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,la)]
 def detecta_colisao():
     global lados, b
     
@@ -109,7 +117,7 @@ def detecta_colisao():
                 colide(b, n)
 
 def Minigolf():
-    global estado, Menu, t, xmin, xmax, ymin, ymax
+    global estado, Menu, t, xmin, xmax, ymin, ymax, lados
     
     oldt = t
     t = millis()
@@ -119,29 +127,32 @@ def Minigolf():
     rectMode(CORNERS)
     noFill()
     stroke(255)
-    rect(xmin,ymin,xmax,ymax)
+    #rect(xmin,ymin,xmax,ymax)
     
     b.move(dt)
     b.xlr8(dt)
     
-    if b.p.x <= xmin+b.r:
-        colide(b, PVector(1,0))
-    elif b.p.x >= xmax-b.r:
-        colide(b, PVector(-1,0))
+    #if b.p.x <= xmin+b.r:
+        #colide(b, PVector(1,0))
+    #elif b.p.x >= xmax-b.r:
+        #colide(b, PVector(-1,0))
         
-    if b.p.y <= ymin+b.r:
-        colide(b, PVector(0,1))
-    elif b.p.y >= ymax-b.r:
-        colide(b, PVector(0,-1))
-    
+    #if b.p.y <= ymin+b.r:
+        #colide(b, PVector(0,1))
+    #elif b.p.y >= ymax-b.r:
+        #colide(b, PVector(0,-1))
+    detecta_colisao()
     
     fill(255)
-    noStroke()
+    stroke(255)
     ellipse(b.p.x,b.p.y, 2*b.r, 2*b.r)
     
-    noFill()
-    stroke(255)
-    ellipse(b.p.x,b.p.y, 2*b.r+20, 2*b.r+20)
+    for i in lados:
+        line(i[0].x,i[0].y,i[1].x,i[1].y)
+    
+    #noFill()
+    #stroke(255)
+    #ellipse(b.p.x,b.p.y, 2*b.r+20, 2*b.r+20)
     
     rectMode(CENTER)
     text('Exit', 0.2*width, 50)
@@ -150,6 +161,7 @@ def Minigolf():
         if mousePressed == True:
             estado = Menu
 
+    
     
 
 posy = y-50
@@ -180,7 +192,7 @@ def draw():
 def mouseDragged():
     global inc, ver
     
-    if v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
+    if b.v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
         if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
             ver = True
     
