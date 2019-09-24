@@ -93,8 +93,8 @@ class Obstaculo:
     def obstaculo4(self, px, py, x, y):
         #lago
         #caso a bolinha entre aqui, ela volta para o ponto em que saiu
-        ellipse(px, py, x, y)
-        ellipse(px, py, x/2, y/2)
+        ellipse(px, py, 2*x, y)
+#        ellipse(px, py, x, y)
         
     def obstaculo5(self, px, py, x, y):
         #areia
@@ -109,14 +109,14 @@ def setup():
     
     
 def draw():
-    background(255)
-    o.obstaculo1(300, 300, 200, 200)
-    print(o.a21)
-    print(o.b21)
-    print(o.a22)
-    print(o.b22)
+    background(0)
+    o.obstaculo4(300, 300, 200, 200)
+#    print(o.a21)
+#    print(o.b21)
+#    print(o.a22)
+#    print(o.b22)
 #    print(o.tg5)
 #    print(o.tg6)
 #    print(o.tg7)
 
-    o.obstaculo2(700, 300, 100, 100)
+#    o.obstaculo2(700, 300, 100, 100)
