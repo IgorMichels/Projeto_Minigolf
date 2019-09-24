@@ -57,9 +57,15 @@ class Bola:
         self.v = v
         self.p = p
         self.r = r
-    def move(self,dt):
-        self.p.add(self.v*dt)
-
+        p0 = p
+        v0 = v
+    def move(self,dt,h2o):
+        if h2o == False:
+            self.p.add(self.v*dt)
+        else:
+            self.p = p0
+            self.v = v0
+    
     def xlr8(self,dt,at=False):
         v = self.v.copy()
         if at == False:
@@ -86,6 +92,7 @@ class Bola:
                 self.v.add(v)
         
 at = False
+h2o = False
 b = Bola(p,v,r)
 b0 = Bola(p0,v0,r0)
 
@@ -196,9 +203,14 @@ class Obstaculo:
         #caso a bolinha entre aqui, ela volta para o ponto em que saiu
         self.px = px
         self.py = py
-        
-        ellipse(px, py, x, y)
-        ellipse(px, py, x/2, y/2)
+
+        fill(107, 191, 183)
+        noStroke()
+        ellipse(px, py, 2*x, y)
+        self.a2 = (1.5*x)**2 + (0.5*y)**2
+        self.b2 = (0.5*y)**2
+        #dados da ellipse
+
         
     def obstaculo5(self, px, py, x, y):
         #areia
@@ -213,7 +225,8 @@ class Obstaculo:
         self.b2 = (0.5*y)**2
         #dados da ellipse
         
-o = Obstaculo()
+o4 = Obstaculo()
+o5 = Obstaculo()
 
 def colide(b, s):
     s.normalize()
@@ -248,17 +261,19 @@ def detecta_colisao():
             if a_.x**2 + a_.y**2 <= r2:
                 colide(b,a_)
 
+pa = PVector(0,0)
 
 def Minigolf():
-    global estado, Menu, t, lados, b, b0, p0, v0, r0, o, at
+    global estado, Menu, t, lados, b, b0, p0, v0, r0, o5, at, o4, h2o
         
     oldt = t
     t = millis()
     dt = t-oldt
     dt = 38
     background(122, 166, 56)
-    o.obstaculo5(300,500,70,120)
-    
+    o5.obstaculo5(300,500,70,120)
+    o4.obstaculo4(500,550,100,50)
+        
     rectMode(CORNERS)
     
     fill(255,255,255)
@@ -272,16 +287,23 @@ def Minigolf():
             estado = Menu
             b = b0
             b0 = Bola(p0,v0,r0)
-                
-    print(o.px)
-    if (p.x-o.px)**2/o.a2 + (p.y-o.py)**2/o.b2 <=1:
+
+    print(b.v)
+    print(b.p)
+    print(pa)
+                                                    
+    if (p.x-o5.px)**2/o5.a2 + (p.y-o5.py)**2/o5.b2 <=1:
         at = True
     else:
         at = False
-    
-    b.move(dt)
+
+    if (p.x-o4.px)**2/o4.a2 + (p.y-o4.py)**2/o4.b2 <=1:
+        h2o = True
+    else:
+        h2o = False
+            
+    b.move(dt,h2o)
     b.xlr8(dt, at)
-    
     
     #if b.p.x <= xmin+b.r:
         #colide(b, PVector(1,0))
