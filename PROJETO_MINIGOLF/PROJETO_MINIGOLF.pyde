@@ -47,7 +47,9 @@ v = PVector(0,0)
 p = PVector(300,300)
 r = 10
 
-
+v0 = PVector(0,0)
+p0 = PVector(300,300)
+r0 = 10
 
 
 #incrementos e verfificadores de movimento    
@@ -80,6 +82,7 @@ class Bola:
 
 
 b = Bola(p,v,r)
+b0 = Bola(p0,v0,r0)
 
 def colide(b, s):
     s.normalize()
@@ -115,8 +118,8 @@ def detecta_colisao():
 
 
 def Minigolf():
-    global estado, Menu, t, lados
-    
+    global estado, Menu, t, lados, b, b0, p0, v0, r0
+        
     oldt = t
     t = millis()
     dt = t-oldt
@@ -124,10 +127,18 @@ def Minigolf():
 
     background(0)
     rectMode(CORNERS)
+    
     noFill()
     stroke(255)
-
-    
+    rectMode(CENTER)
+    text('Exit', 0.2*width, 50)
+    if mouseX <= 0.2*width + 0.1*width and mouseX >= 0.2*width - 0.1*width and mouseY <= 50+30 and mouseY >= 50-30:
+        rect(0.2*width, 50, 0.2*width, 60)
+        if mousePressed == True:
+            estado = Menu
+            b = b0
+            b0 = Bola(p0,v0,r0)
+                
     b.move(dt)
     b.xlr8(dt)
     
@@ -149,16 +160,8 @@ def Minigolf():
     for i in lados:
         line(i[0].x,i[0].y,i[1].x,i[1].y)
     
-    #noFill()
-    #stroke(255)
     #ellipse(b.p.x,b.p.y, 2*b.r+20, 2*b.r+20)
-    
-    rectMode(CENTER)
-    text('Exit', 0.2*width, 50)
-    if mouseX <= 0.2*width + 0.1*width and mouseX >= 0.2*width - 0.1*width and mouseY <= 50+30 and mouseY >= 50-30:
-        rect(0.2*width, 50, 0.2*width, 60)
-        if mousePressed == True:
-            estado = Menu
+
 
     
     
