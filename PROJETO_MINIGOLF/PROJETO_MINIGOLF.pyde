@@ -1,14 +1,11 @@
 #coordenadas da tela
 x = 800
-y = 800
+y = 600
 
-la = PVector(200,200)
-lb = PVector(200,500)
-lc = PVector(300,600)
-ld = PVector(600,600)
-le = PVector(600,500)
-lf = PVector(400,500)
-lg = PVector(400,200)
+la = PVector(250,250)
+lb = PVector(250,350)
+lc = PVector(550,350)
+ld = PVector(550,250)
 
 def Menu():
     global estado
@@ -24,19 +21,19 @@ def Menu():
     noFill()
     stroke(255)
     
-    text('New Game', width/2, 300)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 300+45 and mouseY >= 300-45:
-        rect(width/2, 300,180,90)
+    text('New Game', width/2, 250)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 250+45 and mouseY >= 250-45:
+        rect(width/2, 250,180,90)
     
-    text('Credits', width/2, 500)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 500+45 and mouseY >= 500-45:
-        rect(width/2, 500,180,90)
+    text('Credits', width/2, 400)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 400+45 and mouseY >= 400-45:
+        rect(width/2, 400,180,90)
             
             
 #definicao da bola
-v = PVector(0,0)
-p = PVector(300,300)
-r = 10
+v = PVector(0,0) # vel = 1cm/ms
+p = PVector(300,300) # proporção é de 1px = 1cm
+r = 2 # diametro da bolinha oficial vale 40mm
 
 
 
@@ -55,14 +52,14 @@ class Bola:
     
     def xlr8(self,dt):
         v = self.v.copy()
-        if v.mag() < 0.005:
+        if v.mag() < 0.009:
             self.v.add(v.mult(-1))
         elif v.mag() < 0.1:
             mi = -0.3*v.mag()
             v.mult(mi)
             self.v.add(v)
         else:
-            mi = -0.09*v.mag()**2
+            mi = -0.3*v.mag()**2
             v.mult(mi)
             self.v.add(v)
     
@@ -83,7 +80,7 @@ def colide(b, s):
 t = millis()
 
 
-lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,la)]
+lados = [(la,lb),(lb,lc),(lc,ld),(ld,la)]
 r2 = b.r**2
 
 def detecta_colisao():
@@ -175,17 +172,19 @@ def mouseDragged():
         line(b.p.x,b.p.y,mouseX,mouseY)
 
 def mouseReleased():
-    global inc, ver
-    if ver:
-        b.v.add(inc/500)
-        inc = PVector(0,0) 
-        ver = False
+    global inc, ver, estado, Minigolf
+    if estado == Minigolf:
+        if ver:
+            b.v.add(inc/300)
+            inc = PVector(0,0) 
+            ver = False
+            
 def mouseClicked():
     global estado, Minigolf, Creditos, b, p, v, r
     if estado == Menu:
-        if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 300+45 and mouseY >= 300-45:
+        if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 250+45 and mouseY >= 250-45:
                 estado = Minigolf    
-        if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 500+45 and mouseY >= 500-45:
+        if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 400+45 and mouseY >= 400-45:
                 estado = Creditos
     if estado == Minigolf:
         if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 50+30 and mouseY >= 50-30:
