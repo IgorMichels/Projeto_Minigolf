@@ -2,13 +2,30 @@
 x = 800
 y = 600
 
-la = PVector(200,100)
-lb = PVector(200,400)
-lc = PVector(300,500)
-ld = PVector(600,500)
-le = PVector(600,400)
-lf = PVector(400,400)
-lg = PVector(400,100)
+la = PVector(100,255)
+lb = PVector(400,255)
+lc = PVector(400,155)
+ld = PVector(490,155)
+le = PVector(490,255)
+lf = PVector(590,255)
+lg = PVector(617.5,255-55/2*3**(1/2))
+lh = PVector(672.5,255-55/2*3**(1/2))
+li = PVector(700,255)
+lj = PVector(700,345)
+lk = PVector(672.5,345+55/2*3**(1/2))
+ll = PVector(617.5,345+55/2*3**(1/2))
+lm = PVector(590,345)
+ln = PVector(490,345)
+lo = PVector(490,445)
+lp = PVector(400,445)
+lq = PVector(400,345)
+lr = PVector(100,345)
+t1a = PVector(410,270)
+t1b = PVector(410,310)
+t1c = PVector(480,270)
+t2a = PVector(410,330)
+t2b = PVector(480,330)
+t2c = PVector(480,290)
 
 def Menu():
     global estado
@@ -41,7 +58,7 @@ def Menu():
 #definicao da bola
 v = PVector(0,0)
 p = PVector(300,200)
-r = 10 #deve ser entre 37/2 e 43/2
+r = 2 #deve ser entre 37/2 e 43/2
 
 v0 = PVector(0,0)
 p0 = PVector(300,200)
@@ -70,18 +87,18 @@ class Bola:
     def xlr8(self,dt,at=False):
         v = self.v.copy()
         if at == False:
-            if v.mag() < 0.005:
+            if v.mag() < 0.01:
                 self.v.add(v.mult(-1))
             elif v.mag() < 0.1:
                 mi = -0.3*v.mag()
                 v.mult(mi)
                 self.v.add(v)
             else:
-                mi = -0.09*v.mag()**2
+                mi = -0.3*v.mag()**2
                 v.mult(mi)
                 self.v.add(v)
         else:
-            if v.mag() < 0.01:
+            if v.mag() < 0.09:
                 self.v.add(v.mult(-1))
             elif v.mag() < 0.2:
                 mi = -0.5*v.mag()
@@ -227,6 +244,7 @@ class Interativos:
         
     def hole(self, px, py, x, y):
         fill(0, 0, 0)
+        noStroke()
         ellipse(px, py, x, y)
         self.px = px
         self.py = py
@@ -249,8 +267,7 @@ def colide(b, s):
 
 t = millis()
 
-
-lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,la)]
+lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,lk),(lk,ll),(ll,lm),(lm,ln),(ln,lo),(lo,lp),(lp,lq),(lq,lr),(lr,la),(t1a,t1b),(t1b,t1c),(t1c,t1a),(t2a,t2b),(t2b,t2c),(t2c,t2a)]
 r2 = b.r**2
 
 def detecta_colisao():
@@ -278,8 +295,8 @@ def Minigolf():
     
     if restart == True:
         v = PVector(0,0)
-        p = PVector(300,200)
-        r = 10 #confereção internacional diz que o diâmetro é de 37 a 43 mm, mas r = 20 fica estranho (grande demais)
+        p = PVector(120,300)
+        r = 2 #confereção internacional diz que o diâmetro é de 37 a 43 mm, mas r = 20 fica estranho (grande demais)
         b = Bola(p,v,r)
         restart = False
         hole = False
@@ -287,16 +304,16 @@ def Minigolf():
     oldt = t
     t = millis()
     dt = t-oldt
-    dt = 38
+    
     background(122, 166, 56)
-    o5.obstaculo5(300,400,70,120)
+#    o5.obstaculo5(300,400,70,120)
 #    o4.obstaculo4(500,450,100,50)
-    h.hole(500, 450, 2*r+3, 2*r+3)
+    h.hole(680, 300, 2*r+3, 2*r+3)
         
     rectMode(CORNERS)
     
-    fill(255,255,255)
-    stroke(255)
+    fill(0,0,0)
+    stroke(0)
     rectMode(CENTER)
     text('Exit', 0.11*width, 50)
     if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 50+30 and mouseY >= 50-30:
@@ -313,21 +330,27 @@ def Minigolf():
         if mousePressed == True:
             restart = True
 
-    
-    if (p.x-o5.px)**2/o5.a2 + (p.y-o5.py)**2/o5.b2 <=1:
-        at = True
-    else:
-        at = False
+    fill(255,0,0)
+    triangle(410,270,410,310,480,270)
+    triangle(410,330,480,330,480,290)
 
+    #OBSTACULO 5
+#    if (p.x-o5.px)**2/o5.a2 + (p.y-o5.py)**2/o5.b2 <=1:
+#        at = True
+#    else:
+#        at = False
+
+    #BURACO
     if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
        v = PVector(0,0)
-       p = PVector(500, 450)
+       p = PVector(h.px, h.py)
        b = Bola(p,v,r)
        hole = True
        
     print((p.x-h.px)**2 + (p.y-h.py)**2)
     print(v) #percebi que a velocidade tá bugada, temos que corrigir isso
-
+    
+    #OBSTACULO 4
 #    if (p.x-o4.px)**2/o4.a2 + (p.y-o4.py)**2/o4.b2 <=1:
 #        h2o = True
 #    else:
@@ -406,4 +429,3 @@ def mouseReleased():
         b.v.add(inc/500)
         inc = PVector(0,0) 
         ver = False
-        
