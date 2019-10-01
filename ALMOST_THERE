@@ -1,0 +1,386 @@
+#coordenadas da tela
+x = 800
+y = 600
+
+#listade lados da fase teste
+la = PVector(250,250)
+lb = PVector(250,350)
+lc = PVector(550,350)
+ld = PVector(550,250)
+
+lados1 = [(la,lb),(lb,lc),(lc,ld),(ld,la)]
+buraco = [PVector(500,300), 7]
+
+#lista de lados e figuras da fase com rampas
+
+pa = PVector(150,255)
+pb = PVector(150,345)
+pc = PVector(650,345)
+pd = PVector(650,255)
+
+ret_r1 = (PVector(300,255), 50, 90)
+ret_r2 = (PVector(450,255), 50, 90)
+
+lados_r = [(pa,pb),(pb,pc),(pc,pd),(pd,pa)]
+buraco_r = [PVector(630,300), 7]
+
+# lista de lados fase michels 1
+ma = PVector(100,255)
+mb = PVector(400,255)
+mc = PVector(400,155)
+md = PVector(490,155)
+le = PVector(490,255)
+lf = PVector(590,255)
+lg = PVector(617.5,255-55/2*3**(1/2))
+lh = PVector(672.5,255-55/2*3**(1/2))
+li = PVector(700,255)
+lj = PVector(700,345)
+lk = PVector(672.5,345+55/2*3**(1/2))
+ll = PVector(617.5,345+55/2*3**(1/2))
+lm = PVector(590,345)
+ln = PVector(490,345)
+lo = PVector(490,445)
+lp = PVector(400,445)
+lq = PVector(400,345)
+lr = PVector(100,345)
+
+t1a = PVector(410,270)
+t1b = PVector(410,310)
+t1c = PVector(480,270)
+t2a = PVector(410,330)
+t2b = PVector(480,330)
+t2c = PVector(480,290)
+lados_m = [(ma,mb),(mb,mc),(mc,md),(md,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,lk),(lk,ll),(ll,lm),(lm,ln),
+        (ln,lo),(lo,lp),(lp,lq),(lq,lr),(lr,ma),(t1a,t1b),(t1b,t1c),(t1c,t1a),(t2a,t2b),(t2b,t2c),(t2c,t2a)]
+buraco_m = [PVector(680, 300), 7]
+
+# lista de lados fase michels 2
+sa = PVector(260,155)
+sb = PVector(260,355)
+sc = PVector(350,445)
+sd = PVector(450,445)
+se = PVector(540,355)
+sf = PVector(540,155)
+sg = PVector(450,155)
+sh = PVector(450,355)
+si = PVector(350,355)
+sj = PVector(350,155)
+lados_m2 = [(sa,sb),(sb,sc),(sc,sd),(sd,se),(se,sf),(sf,sg),(sg,sh),(sh,si),(si,sj),(sj,sa)]
+buraco_m2 = [PVector(495,175), 7]
+
+
+def Menu():
+    global estado
+    
+    background(0)
+    rectMode(CENTER)
+    
+    textAlign(CENTER)
+    textSize(30)
+    text('MINIGOLF',width/2,100)
+    
+    textSize(20)
+    noFill()
+    stroke(255)
+    
+    text('New Game', width/2, 250)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 250+45 and mouseY >= 250-45:
+        rect(width/2, 250,180,90)
+    
+    text('Credits', width/2, 400)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 400+45 and mouseY >= 400-45:
+        rect(width/2, 400,180,90)
+            
+            
+#definicao da bola
+v = PVector(0,0)     # vel = 1cm/ms
+p = PVector(300,300) # proporção é de 1px = 1cm
+r = 2                # diametro da bolinha oficial vale 40mm
+
+
+
+#incrementos e verfificadores de movimento    
+inc = PVector(0,0)     
+ver = False
+
+
+class Bola:
+    def __init__(self,p,v,r):
+        self.v = v.copy()
+        self.p = p.copy()
+        self.r = r
+        self.para = True
+    def move(self,dt):
+            self.p.add(self.v*dt)
+    
+    def xlr8(self,dt):    
+        v = self.v.copy()
+        if self.para:
+            if v.mag() < 0.009:
+                b.v.sub(b.v)
+                
+        if v.mag() < 0.1:
+            mi = -0.3*v.mag()
+            v.mult(mi)
+            self.v.add(v)
+        else:
+            mi = -0.3*v.mag()**2
+            v.mult(mi)
+            self.v.add(v)
+        self.para = True
+    
+b = Bola(p.copy(),v.copy(),r)
+
+
+def colide(b, s):
+    s.normalize()
+    vy = s*(b.v.dot(s))
+    vx = b.v - vy
+
+    
+    vy = vy* (-1)
+    b.p.add(2*vy)
+    b.v = vx + vy
+
+
+t = millis()
+
+
+
+r2 = b.r**2
+
+def detecta_colisao():
+    global lados, b, r2
+    
+    for l in lados:
+        p1 = l[0].copy()
+        p2 = l[1].copy()
+        p = p2-p1
+        ball = b.p.copy()
+        v1 = p.dot(ball-p1)
+        v2 = p.dot(ball-p2)
+        
+        if v1 > 0 and v2 < 0:
+            a_ = (ball-p1) - (v1/(v1-v2))*p
+            if a_.x**2 + a_.y**2 <= r2:
+                colide(b,a_)
+fase = 1
+tempo = 0                
+def detecta_buraco():
+    global tempo , fase, estado, Menu, t, lados, b, lados_r, ret_r1, ret_r2, buraco, Creditos
+    bru = buraco[0]
+    if (bru.x-b.p.x)**2 + (bru.y - b.p.y)**2 <= (buraco[1]/2)**2:
+        b.p.x = bru.x
+        b.p.y = bru.y
+        b.v.x = 0
+        b.v.y = 0
+        tempo+=1
+        if tempo >100:
+            tempo = 0
+            if fase == 1:
+                b.p.x = 170
+                b.p.y = 300
+                b.v.x = 0
+                b.v.y = 0
+                lados = lados_r
+                buraco = buraco_r
+            elif fase == 2:
+                b.p.x = 170
+                b.p.y = 300
+                b.v.x = 0
+                b.v.y = 0
+                lados = lados_m
+                buraco = buraco_m
+            elif fase == 3:
+                b.p.x = 305
+                b.p.y = 175
+                b.v.x = 0
+                b.v.y = 0
+                lados = lados_m2
+                buraco = buraco_m2
+            elif fase == 4:
+                estado = Creditos
+                fase = 0
+                b = Bola(p.copy(),v.copy(),r)
+                lados = lados1
+                buraco = [PVector(500,300), 7]
+                
+                
+            fase += 1
+            
+        
+    
+lados = lados1    
+
+def Minigolf():
+    global estado, Menu, t, lados, b, lados_r, ret_r1, ret_r2, buraco
+    oldt = t
+    t = millis()
+    dt = t-oldt
+    
+    def fase1():
+        stroke(0)
+        for i in lados:
+            line(i[0].x,i[0].y,i[1].x,i[1].y)
+        fill(0)    
+        ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
+    def fase2():
+        rectMode(CORNER)
+        noStroke()
+        fill(34,139,34)
+        rect(ret_r1[0].x, ret_r1[0].y,ret_r1[1], ret_r1[2])
+        rect(ret_r2[0].x, ret_r2[0].y,ret_r2[1], ret_r2[2])
+        
+        stroke(0)
+        for i in lados:
+            line(i[0].x,i[0].y,i[1].x,i[1].y)
+        fill(0)    
+        ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
+        
+        if b.p.x > 300 and b.p.x < 350 :
+            b.para = False
+            b.v.x -= 0.0001*dt
+            
+        if b.p.x > 450 and b.p.x < 500 :
+            b.para = False
+            b.v.x += 0.0001*dt
+            
+    def fase3():
+        stroke(0)
+        for i in lados:
+            line(i[0].x,i[0].y,i[1].x,i[1].y)
+            
+        fill(0)    
+        ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
+        fill(255,0,0)
+        triangle(410,270,410,310,480,270)
+        triangle(410,330,480,330,480,290)
+    def fase4():
+        stroke(0)
+        for i in lados:
+            line(i[0].x,i[0].y,i[1].x,i[1].y)
+            
+        fill(0)    
+        ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
+        
+       
+        
+    background(122, 166, 56)
+    
+    if fase == 1:
+        fase1()
+    elif fase == 2:
+        fase2()
+    elif fase == 3:
+        fase3()
+    elif fase == 4:
+        fase4()
+        
+
+    
+    rectMode(CENTER)
+    stroke(0)
+    fill(0)
+    text('Exit', 0.11*width, 50)
+    if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 50+30 and mouseY >= 50-30:
+        noFill()
+        rect(0.11*width, 50, 0.2*width, 60)
+        
+    text('Restart', 0.11*width, 120)
+    if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 120+30 and mouseY >= 120-30:
+        noFill()
+        rect(0.11*width, 120, 0.2*width, 60)
+                                                    
+            
+    b.move(dt)
+    b.xlr8(dt)
+    
+    detecta_colisao()
+    detecta_buraco()
+    
+    fill(255)
+    stroke(255)
+    ellipse(b.p.x,b.p.y, 2*b.r, 2*b.r)
+    
+
+posy = y-50
+
+def Creditos():
+    global posy, Menu, estado
+    background(0)
+    posx = width/2
+    v = -3
+    posy += v
+    text("Minigolf: \n Isaque Vieira Machado Pim \n Igor Patricio Michels  \n \n Agradecimentos: \n Paulo Cesar \n Asla de Sa \n Coffee Machine do 14", posx, posy)
+    if posy < -400:
+        estado = Menu
+        posy = y-50
+
+    
+
+estado = Menu
+
+def setup():
+    size(x, y)
+    
+def draw():
+    global estado
+    estado()
+    
+def mouseDragged():
+    global inc, ver
+    
+    #if b.v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
+    if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
+        ver = True
+    
+    if ver:
+        inc.x = b.p.x - mouseX
+        inc.y = b.p.y - mouseY
+        stroke(255,0,0)
+        line(b.p.x,b.p.y,mouseX,mouseY)
+
+def mouseReleased():
+    global inc, ver, estado, Minigolf
+    if estado == Minigolf:
+        if ver:
+            b.v.add(inc/300)
+            inc = PVector(0,0) 
+            ver = False
+            
+def mouseClicked():
+    global estado, Minigolf, Creditos, b, p, v, r, lados, buraco, fase
+    if estado == Menu:
+        if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 250+45 and mouseY >= 250-45:
+                estado = Minigolf    
+        if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 400+45 and mouseY >= 400-45:
+                estado = Creditos
+    if estado == Minigolf:
+        if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 50+30 and mouseY >= 50-30:
+            estado = Menu
+            b = Bola(p.copy(),v.copy(),r)
+            lados = lados1
+            buraco = [PVector(500,300), 7]
+            fase = 1
+        if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 120+30 and mouseY >= 120-30:
+            if fase == 1:
+                b.p.x = p.x
+                b.p.y = p.y
+                b.v.x = 0
+                b.v.y = 0
+            elif fase == 2:
+                b.p.x = 170
+                b.p.y = 300
+                b.v.x = 0
+                b.v.y = 0
+    
+            elif fase == 3:
+                b.p.x = 170
+                b.p.y = 300
+                b.v.x = 0
+                b.v.y = 0
+            elif fase == 4:
+                b.p.x = 305
+                b.p.y = 175
+                b.v.x = 0
+                b.v.y = 0
