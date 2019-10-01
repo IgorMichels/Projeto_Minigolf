@@ -2,117 +2,9 @@
 x = 800
 y = 600
 
-la = PVector(100,255)
-lb = PVector(400,255)
-lc = PVector(400,155)
-ld = PVector(490,155)
-le = PVector(490,255)
-lf = PVector(590,255)
-lg = PVector(617.5,255-55/2*3**(1/2))
-lh = PVector(672.5,255-55/2*3**(1/2))
-li = PVector(700,255)
-lj = PVector(700,345)
-lk = PVector(672.5,345+55/2*3**(1/2))
-ll = PVector(617.5,345+55/2*3**(1/2))
-lm = PVector(590,345)
-ln = PVector(490,345)
-lo = PVector(490,445)
-lp = PVector(400,445)
-lq = PVector(400,345)
-lr = PVector(100,345)
-t1a = PVector(410,270)
-t1b = PVector(410,310)
-t1c = PVector(480,270)
-t2a = PVector(410,330)
-t2b = PVector(480,330)
-t2c = PVector(480,290)
-
-def Menu():
-    global estado
-    
-    background(0)
-    rectMode(CENTER)
-    
-    textAlign(CENTER)
-    textSize(30)
-    text('MINIGOLF',width/2,100)
-    
-    textSize(20)
-    noFill()
-    stroke(255)
-    
-    text('New Game', width/2, 200)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 200+45 and mouseY >= 200-45:
-        rect(width/2, 200,180,90)
-        if mousePressed == True:
-            estado = Minigolf
-            restart = True
-            
-    text('Credits', width/2, 400)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 400+45 and mouseY >= 400-45:
-        rect(width/2, 400,180,90)
-        if mousePressed == True:
-            estado = Creditos
-            
-            
-#definicao da bola
-v = PVector(0,0)
-p = PVector(300,200)
-r = 2 #deve ser entre 37/2 e 43/2
-
-v0 = PVector(0,0)
-p0 = PVector(300,200)
-r0 = 10
-
-
-#incrementos e verfificadores de movimento    
-inc = PVector(0,0)     
-ver = False
-
-
-class Bola:
-    def __init__(self,p,v,r):
-        self.v = v
-        self.p = p
-        self.r = r
-        p0 = p
-        v0 = v
-    def move(self,dt,h2o):
-        if h2o == False:
-            self.p.add(self.v*dt)
-        else:
-            self.p = p0
-            self.v = v0
-    
-    def xlr8(self,dt,at=False):
-        v = self.v.copy()
-        if at == False:
-            if v.mag() < 0.01:
-                self.v.add(v.mult(-1))
-            elif v.mag() < 0.1:
-                mi = -0.3*v.mag()
-                v.mult(mi)
-                self.v.add(v)
-            else:
-                mi = -0.3*v.mag()**2
-                v.mult(mi)
-                self.v.add(v)
-        else:
-            if v.mag() < 0.09:
-                self.v.add(v.mult(-1))
-            elif v.mag() < 0.2:
-                mi = -0.5*v.mag()
-                v.mult(mi)
-                self.v.add(v)
-            else:
-                mi = -0.5*v.mag()**2
-                v.mult(mi)
-                self.v.add(v)
-        
-at = False
-h2o = False
-b = Bola(p,v,r)
-b0 = Bola(p0,v0,r0)
+fase1 = True
+fase2 = True
+fase3 = True
 
 class Interativos:
     def __init__(self):
@@ -248,11 +140,120 @@ class Interativos:
         ellipse(px, py, x, y)
         self.px = px
         self.py = py
-        
-        
-o4 = Interativos()
-o5 = Interativos()
+
 h = Interativos()
+
+def Menu():
+    global estado
+    
+    background(0)
+    rectMode(CENTER)
+    
+    textAlign(CENTER)
+    textSize(30)
+    text('MINIGOLF',width/2,100)
+    
+    textSize(20)
+    noFill()
+    stroke(255)
+    
+    text('New Game', width/2, 200)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 200+45 and mouseY >= 200-45:
+        rect(width/2, 200,180,90)
+        if mousePressed == True:
+            estado = Minigolf
+            restart = True
+            
+    text('Credits', width/2, 400)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 400+45 and mouseY >= 400-45:
+        rect(width/2, 400,180,90)
+        if mousePressed == True:
+            estado = Creditos
+
+class Bola:
+    def __init__(self,p,v,r):
+        self.v = v
+        self.p = p
+        self.r = r
+        p0 = p
+        v0 = v
+    def move(self,dt,h2o = False):
+        if h2o == False:
+            self.p.add(self.v*dt)
+        else:
+            self.p = p0
+            self.v = v0
+    
+    def xlr8(self,dt,at=False):
+        v = self.v.copy()
+        if at == False:
+            if v.mag() < 0.01:
+                self.v.add(v.mult(-1))
+            elif v.mag() < 0.1:
+                mi = -0.3*v.mag()
+                v.mult(mi)
+                self.v.add(v)
+            else:
+                mi = -0.3*v.mag()**2
+                v.mult(mi)
+                self.v.add(v)
+        else:
+            if v.mag() < 0.09:
+                self.v.add(v.mult(-1))
+            elif v.mag() < 0.2:
+                mi = -0.5*v.mag()
+                v.mult(mi)
+                self.v.add(v)
+            else:
+                mi = -0.5*v.mag()**2
+                v.mult(mi)
+                self.v.add(v)
+
+if fase1 == True:
+    la = PVector(100,255)
+    lb = PVector(400,255)
+    lc = PVector(400,155)
+    ld = PVector(490,155)
+    le = PVector(490,255)
+    lf = PVector(590,255)
+    lg = PVector(617.5,255-55/2*3**(1/2))
+    lh = PVector(672.5,255-55/2*3**(1/2))
+    li = PVector(700,255)
+    lj = PVector(700,345)
+    lk = PVector(672.5,345+55/2*3**(1/2))
+    ll = PVector(617.5,345+55/2*3**(1/2))
+    lm = PVector(590,345)
+    ln = PVector(490,345)
+    lo = PVector(490,445)
+    lp = PVector(400,445)
+    lq = PVector(400,345)
+    lr = PVector(100,345)
+    t1a = PVector(410,270)
+    t1b = PVector(410,310)
+    t1c = PVector(480,270)
+    t2a = PVector(410,330)
+    t2b = PVector(480,330)
+    t2c = PVector(480,290)
+    lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,lk),(lk,ll),(ll,lm),(lm,ln),(ln,lo),(lo,lp),(lp,lq),(lq,lr),(lr,la),(t1a,t1b),(t1b,t1c),(t1c,t1a),(t2a,t2b),(t2b,t2c),(t2c,t2a)]
+    
+elif fase2 == True:
+    la = PVector(150,255)
+    lb = PVector(150,345)
+    lc = PVector(650,345)
+    ld = PVector(650,255)
+    lados = [(la,lb),(lb,lc),(lc,ld),(ld,la)]
+            
+
+#definicao da bola
+v = PVector(0,0)
+p = PVector(300,200)
+r = 2
+
+#incrementos e verfificadores de movimento    
+inc = PVector(0,0)     
+ver = False
+
+b = Bola(p,v,r)
 
 def colide(b, s):
     s.normalize()
@@ -267,7 +268,6 @@ def colide(b, s):
 
 t = millis()
 
-lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,lk),(lk,ll),(ll,lm),(lm,ln),(ln,lo),(lo,lp),(lp,lq),(lq,lr),(lr,la),(t1a,t1b),(t1b,t1c),(t1c,t1a),(t2a,t2b),(t2b,t2c),(t2c,t2a)]
 r2 = b.r**2
 
 def detecta_colisao():
@@ -291,25 +291,13 @@ restart = True
 hole = False
 
 def Minigolf():
-    global estado, Menu, t, lados, restart, p, r, v, b, o5, at, o4, h2o, h, hole
-    
-    if restart == True:
-        v = PVector(0,0)
-        p = PVector(120,300)
-        r = 2 #confereção internacional diz que o diâmetro é de 37 a 43 mm, mas r = 20 fica estranho (grande demais)
-        b = Bola(p,v,r)
-        restart = False
-        hole = False
-    
+    global estado, Menu, t, restart, p, r, v, b, h, hole, fase1, fase2, fase3, lados
+    background(122, 166, 56)
     oldt = t
     t = millis()
     dt = t-oldt
+    r = 2
     
-    background(122, 166, 56)
-#    o5.obstaculo5(300,400,70,120)
-#    o4.obstaculo4(500,450,100,50)
-    h.hole(680, 300, 2*r+3, 2*r+3)
-        
     rectMode(CORNERS)
     
     fill(0,0,0)
@@ -322,6 +310,9 @@ def Minigolf():
         if mousePressed == True:
             estado = Menu
             restart = True
+            fase1 = True
+            fase2 = True
+            fase3 = True
             
     text('Restart', 0.11*width, 120)
     if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 120+30 and mouseY >= 120-30:
@@ -329,45 +320,51 @@ def Minigolf():
         rect(0.11*width, 120, 0.2*width, 60)
         if mousePressed == True:
             restart = True
-
-    fill(255,0,0)
-    triangle(410,270,410,310,480,270)
-    triangle(410,330,480,330,480,290)
-
-    #OBSTACULO 5
-#    if (p.x-o5.px)**2/o5.a2 + (p.y-o5.py)**2/o5.b2 <=1:
-#        at = True
-#    else:
-#        at = False
-
-    #BURACO
-    if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
-       v = PVector(0,0)
-       p = PVector(h.px, h.py)
-       b = Bola(p,v,r)
-       hole = True
-       
-    print((p.x-h.px)**2 + (p.y-h.py)**2)
-    print(v) #percebi que a velocidade tá bugada, temos que corrigir isso
     
-    #OBSTACULO 4
-#    if (p.x-o4.px)**2/o4.a2 + (p.y-o4.py)**2/o4.b2 <=1:
-#        h2o = True
-#    else:
-#        h2o = False
-            
-    b.move(dt,h2o)
-    b.xlr8(dt, at)
-    
-    #if b.p.x <= xmin+b.r:
-        #colide(b, PVector(1,0))
-    #elif b.p.x >= xmax-b.r:
-        #colide(b, PVector(-1,0))
+    if fase1 == True:
+        if restart == True:
+            v = PVector(0,0)
+            p = PVector(120,300)
+            b = Bola(p,v,r)
+            restart = False
+            hole = False
         
-    #if b.p.y <= ymin+b.r:
-        #colide(b, PVector(0,1))
-    #elif b.p.y >= ymax-b.r:
-        #colide(b, PVector(0,-1))
+        h.hole(680, 300, 2*r+3, 2*r+3)
+    
+        fill(255,0,0)
+        triangle(410,270,410,310,480,270)
+        triangle(410,330,480,330,480,290)
+    
+        #BURACO
+        if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
+            v = PVector(0,0)
+            p = PVector(h.px, h.py)
+            b = Bola(p,v,r)
+            hole = True
+            restart = True
+            fase1 = False
+    
+    elif fase2 == True:
+        h.hole(630, 300, 2*r+3, 2*r+3)
+        
+        if restart == True:
+            v = PVector(0,0)
+            p = PVector(170,300)
+            b = Bola(p,v,r)
+            restart = False
+            hole = False
+        
+        #BURACO
+        if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
+            v = PVector(0,0)
+            p = PVector(h.px, h.py)
+            b = Bola(p,v,r)
+            hole = True
+            
+    
+    b.move(dt)
+    b.xlr8(dt)
+    
     detecta_colisao()
     
     fill(255)
@@ -377,12 +374,6 @@ def Minigolf():
     stroke(0)
     for i in lados:
         line(i[0].x,i[0].y,i[1].x,i[1].y)
-    
-    #ellipse(b.p.x,b.p.y, 2*b.r+20, 2*b.r+20)
-
-
-    
-    
 
 posy = y-50
 
@@ -396,9 +387,6 @@ def Creditos():
     if posy < -400:
         estado = Menu
         posy = y-50
-
-    
-    
     
 estado = Menu
 
