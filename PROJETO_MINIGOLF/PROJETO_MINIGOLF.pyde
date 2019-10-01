@@ -235,7 +235,7 @@ t = millis()
 
 r2 = b.r**2
 
-pa = PVector(0,0)
+#pa = PVector(0,0)
 restart = True
 hole = False
 
@@ -279,8 +279,8 @@ def Minigolf():
     elif fase3:
         la = PVector(260,155)
         lb = PVector(260,355)
-        lc = PVector(350,445)
-        ld = PVector(450,445)
+        lc = PVector(320,455)
+        ld = PVector(480,455)
         le = PVector(540,355)
         lf = PVector(540,155)
         lg = PVector(450,155)
@@ -332,8 +332,8 @@ def Minigolf():
         if mousePressed == True:
             restart = True
     
-    if fase1 == True:
-        if restart == True:
+    if fase1:
+        if restart:
             v = PVector(0,0)
             p = PVector(120,300)
             b = Bola(p,v,r)
@@ -354,16 +354,16 @@ def Minigolf():
             hole = True
             restart = True
             fase1 = False
-    
-    elif fase2 == True:
-        h.hole(630, 300, 2*r+3, 2*r+3)
-        
-        if restart == True:
+            
+    elif fase2:
+        if restart:
             v = PVector(0,0)
             p = PVector(170,300)
             b = Bola(p,v,r)
             restart = False
             hole = False
+        
+        h.hole(630, 300, 2*r+3, 2*r+3)
         
         #BURACO
         if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
@@ -371,17 +371,18 @@ def Minigolf():
             p = PVector(h.px, h.py)
             b = Bola(p,v,r)
             hole = True
+            restart = True
             fase2 = False
             
-    elif fase3 == True:
-        h.hole(630, 300, 2*r+3, 2*r+3)
-        
-        if restart == True:
+    elif fase3:
+        if restart:
             v = PVector(0,0)
-            p = PVector(170,300)
+            p = PVector(305,175)
             b = Bola(p,v,r)
             restart = False
             hole = False
+        
+        h.hole(495, 175, 2*r+3, 2*r+3)
         
         #BURACO
         if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
