@@ -1,14 +1,14 @@
 #coordenadas da tela
 x = 800
-y = 800
+y = 600
 
-la = PVector(200,200)
-lb = PVector(200,500)
-lc = PVector(300,600)
-ld = PVector(600,600)
-le = PVector(600,500)
-lf = PVector(400,500)
-lg = PVector(400,200)
+la = PVector(200,100)
+lb = PVector(200,400)
+lc = PVector(300,500)
+ld = PVector(600,500)
+le = PVector(600,400)
+lf = PVector(400,400)
+lg = PVector(400,100)
 
 def Menu():
     global estado
@@ -24,26 +24,27 @@ def Menu():
     noFill()
     stroke(255)
     
-    text('New Game', width/2, 300)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 300+45 and mouseY >= 300-45:
-        rect(width/2, 300,180,90)
+    text('New Game', width/2, 200)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 200+45 and mouseY >= 200-45:
+        rect(width/2, 200,180,90)
         if mousePressed == True:
             estado = Minigolf
-    
-    text('Credits', width/2, 500)
-    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 500+45 and mouseY >= 500-45:
-        rect(width/2, 500,180,90)
+            restart = True
+            
+    text('Credits', width/2, 400)
+    if mouseX <= width/2 + 90 and mouseX >= width/2 - 90 and mouseY <= 400+45 and mouseY >= 400-45:
+        rect(width/2, 400,180,90)
         if mousePressed == True:
             estado = Creditos
             
             
 #definicao da bola
 v = PVector(0,0)
-p = PVector(300,300)
-r = 10
+p = PVector(300,200)
+r = 10 #deve ser entre 37/2 e 43/2
 
 v0 = PVector(0,0)
-p0 = PVector(300,300)
+p0 = PVector(300,200)
 r0 = 10
 
 
@@ -96,8 +97,7 @@ h2o = False
 b = Bola(p,v,r)
 b0 = Bola(p0,v0,r0)
 
-
-class Obstaculo:
+class Interativos:
     def __init__(self):
         pass
 
@@ -225,8 +225,16 @@ class Obstaculo:
         self.b2 = (0.5*y)**2
         #dados da ellipse
         
-o4 = Obstaculo()
-o5 = Obstaculo()
+    def hole(self, px, py, x, y):
+        fill(0, 0, 0)
+        ellipse(px, py, x, y)
+        self.px = px
+        self.py = py
+        
+        
+o4 = Interativos()
+o5 = Interativos()
+h = Interativos()
 
 def colide(b, s):
     s.normalize()
@@ -262,17 +270,28 @@ def detecta_colisao():
                 colide(b,a_)
 
 pa = PVector(0,0)
+restart = True
+hole = False
 
 def Minigolf():
-    global estado, Menu, t, lados, b, b0, p0, v0, r0, o5, at, o4, h2o
-        
+    global estado, Menu, t, lados, restart, p, r, v, b, o5, at, o4, h2o, h, hole
+    
+    if restart == True:
+        v = PVector(0,0)
+        p = PVector(300,200)
+        r = 10 #confereção internacional diz que o diâmetro é de 37 a 43 mm, mas r = 20 fica estranho (grande demais)
+        b = Bola(p,v,r)
+        restart = False
+        hole = False
+    
     oldt = t
     t = millis()
     dt = t-oldt
     dt = 38
     background(122, 166, 56)
-    o5.obstaculo5(300,500,70,120)
-    o4.obstaculo4(500,550,100,50)
+    o5.obstaculo5(300,400,70,120)
+#    o4.obstaculo4(500,450,100,50)
+    h.hole(500, 450, 2*r+3, 2*r+3)
         
     rectMode(CORNERS)
     
@@ -285,22 +304,34 @@ def Minigolf():
         rect(0.11*width, 50, 0.2*width, 60)
         if mousePressed == True:
             estado = Menu
-            b = b0
-            b0 = Bola(p0,v0,r0)
+            restart = True
+            
+    text('Restart', 0.11*width, 120)
+    if mouseX <= 0.11*width + 0.1*width and mouseX >= 0.11*width - 0.1*width and mouseY <= 120+30 and mouseY >= 120-30:
+        noFill()
+        rect(0.11*width, 120, 0.2*width, 60)
+        if mousePressed == True:
+            restart = True
 
-    print(b.v)
-    print(b.p)
-    print(pa)
-                                                    
+    
     if (p.x-o5.px)**2/o5.a2 + (p.y-o5.py)**2/o5.b2 <=1:
         at = True
     else:
         at = False
 
-    if (p.x-o4.px)**2/o4.a2 + (p.y-o4.py)**2/o4.b2 <=1:
-        h2o = True
-    else:
-        h2o = False
+    if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
+       v = PVector(0,0)
+       p = PVector(500, 450)
+       b = Bola(p,v,r)
+       hole = True
+       
+    print((p.x-h.px)**2 + (p.y-h.py)**2)
+    print(v) #percebi que a velocidade tá bugada, temos que corrigir isso
+
+#    if (p.x-o4.px)**2/o4.a2 + (p.y-o4.py)**2/o4.b2 <=1:
+#        h2o = True
+#    else:
+#        h2o = False
             
     b.move(dt,h2o)
     b.xlr8(dt, at)
@@ -356,17 +387,18 @@ def draw():
     estado()
     
 def mouseDragged():
-    global inc, ver
+    global inc, ver, hole
     
-    #if b.v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
-    if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
-        ver = True
+    if b.v.mag() == 0 and hole == False: #condição para não aceitar tacadas se a bola estiver se movendo
+        if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
+            ver = True
     
     if ver:
         inc.x = b.p.x - mouseX
         inc.y = b.p.y - mouseY
         stroke(255,0,0)
         line(b.p.x,b.p.y,mouseX,mouseY)
+        #colocar um contador de jogadas no canto superior direito
 
 def mouseReleased():
     global inc, ver
