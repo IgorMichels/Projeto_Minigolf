@@ -207,42 +207,7 @@ class Bola:
             else:
                 mi = -0.5*v.mag()**2
                 v.mult(mi)
-                self.v.add(v)
-
-if fase1 == True:
-    la = PVector(100,255)
-    lb = PVector(400,255)
-    lc = PVector(400,155)
-    ld = PVector(490,155)
-    le = PVector(490,255)
-    lf = PVector(590,255)
-    lg = PVector(617.5,255-55/2*3**(1/2))
-    lh = PVector(672.5,255-55/2*3**(1/2))
-    li = PVector(700,255)
-    lj = PVector(700,345)
-    lk = PVector(672.5,345+55/2*3**(1/2))
-    ll = PVector(617.5,345+55/2*3**(1/2))
-    lm = PVector(590,345)
-    ln = PVector(490,345)
-    lo = PVector(490,445)
-    lp = PVector(400,445)
-    lq = PVector(400,345)
-    lr = PVector(100,345)
-    t1a = PVector(410,270)
-    t1b = PVector(410,310)
-    t1c = PVector(480,270)
-    t2a = PVector(410,330)
-    t2b = PVector(480,330)
-    t2c = PVector(480,290)
-    lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,lk),(lk,ll),(ll,lm),(lm,ln),(ln,lo),(lo,lp),(lp,lq),(lq,lr),(lr,la),(t1a,t1b),(t1b,t1c),(t1c,t1a),(t2a,t2b),(t2b,t2c),(t2c,t2a)]
-    
-elif fase2 == True:
-    la = PVector(150,255)
-    lb = PVector(150,345)
-    lc = PVector(650,345)
-    ld = PVector(650,255)
-    lados = [(la,lb),(lb,lc),(lc,ld),(ld,la)]
-            
+                self.v.add(v)            
 
 #definicao da bola
 v = PVector(0,0)
@@ -270,28 +235,74 @@ t = millis()
 
 r2 = b.r**2
 
-def detecta_colisao():
-    global lados, b, r2
-    
-    for l in lados:
-        p1 = l[0].copy()
-        p2 = l[1].copy()
-        p = p2-p1
-        ball = b.p.copy()
-        v1 = p.dot(ball-p1)
-        v2 = p.dot(ball-p2)
-        
-        if v1 > 0 and v2 < 0:
-            a_ = (ball-p1) - (v1/(v1-v2))*p
-            if a_.x**2 + a_.y**2 <= r2:
-                colide(b,a_)
-
 pa = PVector(0,0)
 restart = True
 hole = False
 
 def Minigolf():
-    global estado, Menu, t, restart, p, r, v, b, h, hole, fase1, fase2, fase3, lados
+    global estado, Menu, t, restart, p, r, v, b, h, hole, fase1, fase2, fase3, b, r2
+    
+    if fase1:
+        la = PVector(100,255)
+        lb = PVector(400,255)
+        lc = PVector(400,155)
+        ld = PVector(490,155)
+        le = PVector(490,255)
+        lf = PVector(590,255)
+        lg = PVector(617.5,255-55/2*3**(1/2))
+        lh = PVector(672.5,255-55/2*3**(1/2))
+        li = PVector(700,255)
+        lj = PVector(700,345)
+        lk = PVector(672.5,345+55/2*3**(1/2))
+        ll = PVector(617.5,345+55/2*3**(1/2))
+        lm = PVector(590,345)
+        ln = PVector(490,345)
+        lo = PVector(490,445)
+        lp = PVector(400,445)
+        lq = PVector(400,345)
+        lr = PVector(100,345)
+        t1a = PVector(410,270)
+        t1b = PVector(410,310)
+        t1c = PVector(480,270)
+        t2a = PVector(410,330)
+        t2b = PVector(480,330)
+        t2c = PVector(480,290)
+        lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,lk),(lk,ll),(ll,lm),(lm,ln),(ln,lo),(lo,lp),(lp,lq),(lq,lr),(lr,la),(t1a,t1b),(t1b,t1c),(t1c,t1a),(t2a,t2b),(t2b,t2c),(t2c,t2a)]
+        
+    elif fase2:
+        la = PVector(150,255)
+        lb = PVector(150,345)
+        lc = PVector(650,345)
+        ld = PVector(650,255)
+        lados = [(la,lb),(lb,lc),(lc,ld),(ld,la)]
+        
+    elif fase3:
+        la = PVector(260,155)
+        lb = PVector(260,355)
+        lc = PVector(350,445)
+        ld = PVector(450,445)
+        le = PVector(540,355)
+        lf = PVector(540,155)
+        lg = PVector(450,155)
+        lh = PVector(450,355)
+        li = PVector(350,355)
+        lj = PVector(350,155)
+        lados = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,la)]
+
+    def detecta_colisao():
+        for l in lados:
+            p1 = l[0].copy()
+            p2 = l[1].copy()
+            p = p2-p1
+            ball = b.p.copy()
+            v1 = p.dot(ball-p1)
+            v2 = p.dot(ball-p2)
+            
+            if v1 > 0 and v2 < 0:
+                a_ = (ball-p1) - (v1/(v1-v2))*p
+                if a_.x**2 + a_.y**2 <= r2:
+                    colide(b,a_)
+        
     background(122, 166, 56)
     oldt = t
     t = millis()
@@ -360,8 +371,25 @@ def Minigolf():
             p = PVector(h.px, h.py)
             b = Bola(p,v,r)
             hole = True
+            fase2 = False
             
-    
+    elif fase3 == True:
+        h.hole(630, 300, 2*r+3, 2*r+3)
+        
+        if restart == True:
+            v = PVector(0,0)
+            p = PVector(170,300)
+            b = Bola(p,v,r)
+            restart = False
+            hole = False
+        
+        #BURACO
+        if (p.x-h.px)**2 + (p.y-h.py)**2 <= (r+3)**2 and v.mag() <= 15:
+            v = PVector(0,0)
+            p = PVector(h.px, h.py)
+            b = Bola(p,v,r)
+            hole = True
+            
     b.move(dt)
     b.xlr8(dt)
     
