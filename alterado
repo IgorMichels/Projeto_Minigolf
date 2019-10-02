@@ -5,20 +5,20 @@ y = 600
 #lista de lados menu
 la = PVector(105,135)
 lb = PVector(105,405)
-lc = PVector(145,485)
+lc = PVector(105,485)
 ld = PVector(245,485)
-le = PVector(295,565)
-lf = PVector(655,565)
+le = PVector(245,565)
+lf = PVector(695,565)
 lg = PVector(695,485)
 lh = PVector(695,135)
-li = PVector(335,135)
+li = PVector(295,135)
 lj = PVector(295,175)
 lk = PVector(295,225)
 ll = PVector(605,225)
 lm = PVector(605,475)
 ln = PVector(335,475)
-lo = PVector(295,395)
-lp = PVector(215,395)
+lo = PVector(335,395)
+lp = PVector(195,395)
 lq = PVector(195,355)
 lr = PVector(195,135)
 lados_menu = [(la,lb),(lb,lc),(lc,ld),(ld,le),(le,lf),(lf,lg),(lg,lh),(lh,li),(li,lj),(lj,lk),(lk,ll),(ll,lm),(lm,ln),
@@ -302,12 +302,16 @@ def Menu():
                 b.v.y = -b.v.y
             if b.p.y <= 135:
                 b.v.y = -b.v.y
+            if b.p.x <= 295:
+                b.v.x = -b.v.x
             if (b.p.x - 315)**2 + (b.p.y - 200)**2 <= 49:
                 b.p.x = 315
                 b.p.y = 200
                 b.v.x = 0
                 b.v.y = 0
                 tempo_animacao += 1
+        else:
+            tempo_animacao += 1
     elif tempo_animacao < 100:
         tempo_animacao += 1
     else:
@@ -578,7 +582,7 @@ def mouseClicked():
                 b.p.y = 300
                 b.v.x = 0
                 b.v.y = 0
-                tempo = 0
+                tempo = 00
             elif fase == 4:
                 b.p.x = 305
                 b.p.y = 175
