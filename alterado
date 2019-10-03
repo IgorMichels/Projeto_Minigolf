@@ -64,7 +64,7 @@ mp = PVector(400,445)
 mq = PVector(400,345)
 mr = PVector(100,345)
 
-    #definições dos triângulos centrais
+    #definicoes dos triangulos centrais
 t1a = PVector(410,270)
 t1b = PVector(410,310)
 t1c = PVector(480,270)
@@ -90,7 +90,7 @@ lados_m2 = [(sa,sb),(sb,sc),(sc,sd),(sd,se),(se,sf),(sf,sg),(sg,sh),(sh,si),(si,
 buraco_m2 = [PVector(495,175), 7]
 
 
-#definições das classes
+#definicoes das classes
 class Bola:
     def __init__(self,p,v,r):
         self.v = v.copy()
@@ -128,7 +128,7 @@ def colide(b, s):
 
 #definicao da bola
 v = PVector(0,0)     # vel = 1cm/ms
-p = PVector(300,300) # proporção é de 1px = 1cm
+p = PVector(300,300) # proporcao e de 1px = 1cm
 r = 2                # diametro da bolinha oficial vale 40mm
 b = Bola(p.copy(),v.copy(),r)
 
@@ -156,7 +156,7 @@ inc = PVector(0,0)
 ver = False
 
 
-#condições iniciais
+#condicoes iniciais
 fase = 1
 tempo = 0
 animacao = 0
@@ -192,7 +192,7 @@ def Menu():
     for i in lados_menu:
         line(i[0].x,i[0].y,i[1].x,i[1].y)
 
-    #animação
+    #animacao
     if tempo_animacao < 50:
         tempo_animacao += 1
     
@@ -430,7 +430,7 @@ def Minigolf():
     def fase2():
         rectMode(CORNER)
         stroke(122,166,56,127)
-        fill(122,166,56,127)#só tirar o alpha, mas aho que ficou legal, eu colocaria em tudo
+        fill(122,166,56,127)
         rect(150,255,500,90)
         
         noStroke()
@@ -485,8 +485,8 @@ def Minigolf():
         
         stroke(242,188,121)
         fill(242,188,121)
-        triangle(260,355,350,445,450,445)
-        triangle(450,445,540,355,260,355)
+        triangle(261,355,350,445,450,445)
+        triangle(450,445,540,355,261,355)
 
         stroke(0)
         for i in lados:
@@ -564,7 +564,7 @@ def draw():
 def mouseDragged():
     global inc, ver
     
-    if b.v.mag() == 0: #condição para não aceitar tacadas se a bola estiver se movendo
+    if b.v.mag() == 0: #condicao para nao aceitar tacadas se a bola estiver se movendo
         if sqrt((mouseX - b.p.x)**2 + (mouseY-b.p.y)**2) <= r+10:
             ver = True
     
