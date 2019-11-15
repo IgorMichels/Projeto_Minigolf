@@ -418,12 +418,22 @@ def Minigolf():
         fill(122, 166, 56, 127)
         rect(250, 250, 300, 100)
         
-        v = t % 360
-        v = float((v*PI)/360)
-        Obstaculo1 = [PVector(396, 300 + 50*sin(v)), PVector(404, 300 + 50*sin(v)), PVector(404, 250), PVector(396, 250)]
+#        Escolher entre as duas camadas a seguir
+        
+#        v = t % 360
+#        v = float((v*PI)/360)
+#        Obstaculo1 = [PVector(396, 300 + 50*sin(v)*sin(v)), PVector(404, 300 + 50*sin(v)*sin(v)), PVector(404, 250), PVector(396, 250)]
+#        rectMode(CORNERS)
+#        fill(192, 192, 192, 255)
+#        rect(396, 250, 404, 300 + 50*sin(v)*sin(v))
+
+        v = t % 1000
+        if v > 500:
+            v = 1000 - v
+        Obstaculo1 = [PVector(396, 300 + v/10), PVector(404, 300 + v/10), PVector(404, 250), PVector(396, 250)]
         rectMode(CORNERS)
         fill(192, 192, 192, 255)
-        rect(396, 250, 404, 300 + 50*sin(v))
+        rect(396, 250, 404, 300 + v/10)
 
         for i in range(len(Obstaculo1)):
             if i == len(Obstaculo1) - 1:
@@ -433,9 +443,9 @@ def Minigolf():
         
         stroke(0)
         for i in lados:
-            line(i[0][0], i[0][1], i[1][0], i[1][1])
+            line(i[0].x, i[0].y, i[1].x, i[1].y)
         fill(0)
-        ellipse(buraco[0][0], buraco[0][1], buraco[1], buraco[1])
+        ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
 
     def fase2():
         rectMode(CORNER)
@@ -476,6 +486,27 @@ def Minigolf():
         triangle(700, 345, 672.5, 345 + 55 / 2 * 3 ** (1 / 2), 617.5, 345 + 55 / 2 * 3 ** (1 / 2))
         triangle(617.5, 345 + 55 / 2 * 3 ** (1 / 2), 590, 345, 700, 345)
 
+        v = t % 1000
+        if v > 500:
+            v = (1000 - v)/5
+        else:
+            v = v/5
+    
+        Triangulo31 = [PVector(410, 280 - v), PVector(410, 320 - v), PVector(480, 280 - v)]
+        Triangulo32 = [PVector(410, 320 + v), PVector(480, 320 + v), PVector(480, 280 + v)]
+        
+        for i in range(len(Triangulo31)):
+            if i == len(Triangulo31) - 1:
+                lados3[18 + i] = ((Triangulo31[i], Triangulo31[0]))
+            else:
+                lados3[18 + i] = ((Triangulo31[i], Triangulo31[i + 1]))
+    
+        for i in range(len(Triangulo32)):
+            if i == len(Triangulo32) - 1:
+                lados3[21 + i] = ((Triangulo32[i], Triangulo32[0]))
+            else:
+                lados3[21 + i] = ((Triangulo32[i], Triangulo32[i + 1]))
+
         stroke(0)
         for i in lados:
             line(i[0].x, i[0].y, i[1].x, i[1].y)
@@ -483,9 +514,9 @@ def Minigolf():
         fill(0)
         ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
         fill(252, 237, 20)
-        triangle(410, 270, 410, 310, 480, 270)
-        triangle(410, 330, 480, 330, 480, 290)
-
+        triangle(Triangulo31[0][0], Triangulo31[0][1], Triangulo31[1][0], Triangulo31[1][1], Triangulo31[2][0], Triangulo31[2][1])
+        triangle(Triangulo32[0][0], Triangulo32[0][1], Triangulo32[1][0], Triangulo32[1][1], Triangulo32[2][0], Triangulo32[2][1])
+        
     def fase4():
         rectMode(CORNER)
         stroke(122, 166, 56, 127)
