@@ -413,6 +413,12 @@ def Minigolf():
         stroke(0)
         for i in lados:
             line(i[0].x, i[0].y, i[1].x, i[1].y)
+        v = t % 360
+        v = float((v*PI)/360)
+        line(400, 300 + 45*sin(v), 400, 250)
+        line(416, 300 + 45*sin(v), 416, 250)
+        line(400, 300 + 45*sin(v), 416, 300 + 45*sin(v))
+        line(400, 250, 416, 250)
         fill(0)
         ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
 
