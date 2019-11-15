@@ -17,6 +17,7 @@ for i in range(len(PontosMenu)):
 
 # lista de lados da fase teste
 Pontos1 = [PVector(250, 250), PVector(250, 350), PVector(550, 350), PVector(550, 250)]
+Obstaculo1 = [PVector(400, 300), PVector(416, 300), PVector(416, 250), PVector(400, 250)]
 
 lados1 = []
 for i in range(len(Pontos1)):
@@ -24,6 +25,13 @@ for i in range(len(Pontos1)):
         lados1.append((Pontos1[i], Pontos1[0]))
     else:
         lados1.append((Pontos1[i], Pontos1[i + 1]))
+
+for i in range(len(Obstaculo1)):
+    if i == len(Obstaculo1) - 1:
+        lados1.append((Obstaculo1[i], Obstaculo1[0]))
+    else:
+        lados1.append((Obstaculo1[i], Obstaculo1[i + 1]))
+
 
 buraco1 = [PVector(500, 300), 7]
 
@@ -409,18 +417,25 @@ def Minigolf():
         stroke(122, 166, 56, 127)
         fill(122, 166, 56, 127)
         rect(250, 250, 300, 100)
-
-        stroke(0)
-        for i in lados:
-            line(i[0].x, i[0].y, i[1].x, i[1].y)
+        
         v = t % 360
         v = float((v*PI)/360)
-        line(400, 300 + 45*sin(v), 400, 250)
-        line(416, 300 + 45*sin(v), 416, 250)
-        line(400, 300 + 45*sin(v), 416, 300 + 45*sin(v))
-        line(400, 250, 416, 250)
+        Obstaculo1 = [PVector(396, 300 + 50*sin(v)), PVector(404, 300 + 50*sin(v)), PVector(404, 250), PVector(396, 250)]
+        rectMode(CORNERS)
+        fill(192, 192, 192, 255)
+        rect(396, 250, 404, 300 + 50*sin(v))
+
+        for i in range(len(Obstaculo1)):
+            if i == len(Obstaculo1) - 1:
+                lados[4 + i] = ((Obstaculo1[i], Obstaculo1[0]))
+            else:
+                lados[4 + i] = ((Obstaculo1[i], Obstaculo1[i + 1]))
+        
+        stroke(0)
+        for i in lados:
+            line(i[0][0], i[0][1], i[1][0], i[1][1])
         fill(0)
-        ellipse(buraco[0].x, buraco[0].y, buraco[1], buraco[1])
+        ellipse(buraco[0][0], buraco[0][1], buraco[1], buraco[1])
 
     def fase2():
         rectMode(CORNER)
