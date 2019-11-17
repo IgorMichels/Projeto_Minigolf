@@ -583,7 +583,7 @@ def Creditos():
     posy += v
     fill(255)
     text(
-        "Minigolf: \n Isaque Vieira Machado Pim \n Igor Patricio Michels  \n \n Agradecimentos: \n Paulo Cesar \n Asla de Sa \n Coffee Machine do 14",
+        "Minigolf: \n Isaque Vieira Machado Pim \n Igor Patricio Michels  \n \n Agradecimentos: \n Paulo Cesar \n Asla de Sa \n Coffee Machine do 14 \n Milionario e Jose Rico (Boate Azul) \n Marciano (nao o JP, o cantor de Ainda Ontem Chorei de Saudade)",
         posx, posy)
     if posy < -400:
         estado = Menu
